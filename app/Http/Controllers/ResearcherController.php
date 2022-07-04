@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dossier;
 use App\Models\Researcher;
 use Illuminate\Http\Request;
+use App\Http\Controllers\DossierController;
 
 class ResearcherController extends Controller
 {
@@ -13,6 +15,13 @@ class ResearcherController extends Controller
         return response()->json($researchers);
     }
 
+    // public function showResearcher ($researchers)
+    // {
+    //     foreach ($researchers as $researcher){
+    //         $data['nom'] = $researcher->departement->id;
+    //     }
+    //     return $data;
+    // } 
 
     public function show(Researcher $researcher)
     {
@@ -36,7 +45,7 @@ class ResearcherController extends Controller
             'phone_number' => $request->phone_number,
             'departement_id' => $request->departement_id
         ]);
-        
+
         return response()->json($researcher);
     }
 
@@ -63,9 +72,16 @@ class ResearcherController extends Controller
 
     public function destroy(Researcher $researcher)
     {
+        $dossiers = Dossier::where('researcher_id', $researcher->id);
+        foreach ($dossiers as $dossier)
+        {
+            $dossierController = new DossierController;
+            $dossierController->destroy();
+        }
         $researcher->delete();
         return response()->json([
             'message' => 'researcher deleted'
         ]);
     }
 }
+

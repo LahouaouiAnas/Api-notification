@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DossierController;
 use App\Http\Controllers\ResearcherController;
@@ -29,6 +30,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('researchers', 'ResearcherController');
     Route::get('/logout', 'UserController@logout');
 });
+
+Route::get('/mail', 'MailController@mailing');
 
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');

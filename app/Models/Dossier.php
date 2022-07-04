@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Event;
 use App\Models\Researcher;
+use App\Models\ReminderLine;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -11,9 +12,10 @@ class Dossier extends Model
 {
     use HasFactory;
 
-    public function events()
+
+    public function reminderLines()
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(ReminderLine::class);
     }
 
     public function researcher()

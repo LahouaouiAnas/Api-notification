@@ -2,43 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use auth;
+use Carbon\Carbon;
 use App\Models\Event;
 use App\Models\Dossier;
 use App\Models\Researcher;
+use App\Models\ReminderLine;
+use App\Models\ReminderType;
 use Illuminate\Http\Request;
 
 class DossierController extends Controller
 {
     public function index()
     {
-        $dossiers = Dossier::all();
+            $dossiers = Dossier::all();
+       
         return response()->json($dossiers);
     }
 
-    // public function dossierToArray($dossiers)
-    // {
-    //     foreach ($dossiers as $dossier) {
-    //         $data['reference'] = $dossier->ref;
-    //         $data['project_title'] = $dossier->project_title;
-    //         $data['researcher_nom'] = $dossier->researcher->nom;
-    //         $data['researcher_prenom'] = $dossier->researcher->prenom;
-    //         $data['departement'] = $dossier->researcher->departement->nom;
-    //         $data['date_de_depot'] = $dossier->date_de_depot;
-    //         $data['statue'] = $dossier->statue;
-    //     }
-    //     return $data;
-    // }
 
     public function show(Dossier $dossier)
     {
-            // $data['reference'] = $dossier->ref;
-            // $data['project_title'] = $dossier->project_title;
-            // $data['researcher_nom'] = $dossier->researcher->nom;
-            // $data['researcher_prenom'] = $dossier->researcher->prenom;
-            // $data['departement'] = $dossier->researcher->departement->nom;
-            // $data['date_de_depot'] = $dossier->date_de_depot;
-            // $data['statue'] = $dossier->statue;
-
         return response()->json($dossier);
     }
 
@@ -48,7 +32,6 @@ class DossierController extends Controller
             'ref' => 'required',
             'project_title' => 'required',
             'statue' => 'required',
-            'date_de_depot' => 'required',
             'researcher_id' => 'required'
         ]);
 
@@ -59,6 +42,19 @@ class DossierController extends Controller
             'date_de_depot' => $request->date_de_depot,
             'researcher_id' => $request->researcher_id
         ]);
+
+        $reminder_types = ReminderType::all();
+        foreach($reminder_types as $reminder_type){
+            $date = Carbon::createFromFormat('Y-m-d', $dossier->date_de_depot);
+            $date = $date->addDays($reminder_type->number_of_days);
+
+            $reminderLine = ReminderLine::create([
+                'dossier_id' => $dossier->id,
+                'notif_date' => $date,
+                'reminder_type_id' => $reminder_type->id,
+            ]);
+        }
+        
         
         return response()->json($dossier);
     }
@@ -77,11 +73,23 @@ class DossierController extends Controller
             'researcher_id' => $request->researcher_id
         ]);
 
+        $reminder_lines = ReminderLine::where('dossier_id', $dossier->id );
+        $date = Carbon::createFromFormat('Y-m-d', $dossier->date_de_depot);
+        foreach($reminder_lines as $reminder_line){
+            $date_de_notif = $date->addDays($reminder_line->remindertype->number_of_days);
+            
+            $reminder_line->update([
+                'notif_date' => $date_de_notif
+            ]);
+        }
+
         return response()->json($dossier);
     }
 
     public function destroy(Dossier $dossier)
     {
+        $reminderLine = ReminderLine::where('dossier_id', $dossier->id);
+        $reminderLine->delete();
         $dossier->delete();
         return response()->json([
             'message' => 'dossier deleted'

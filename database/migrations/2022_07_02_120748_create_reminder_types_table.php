@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnToDossiersTable extends Migration
+class CreateReminderTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddColumnToDossiersTable extends Migration
      */
     public function up()
     {
-        Schema::table('dossiers', function (Blueprint $table) {
-            $table->string('new column')->nullable();
+        Schema::create('reminder_types', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->nullable();
+            $table->integer('number_of_days')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddColumnToDossiersTable extends Migration
      */
     public function down()
     {
-        Schema::table('dossiers', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('reminder_types');
     }
 }

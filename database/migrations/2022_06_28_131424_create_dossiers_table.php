@@ -18,8 +18,7 @@ class CreateDossiersTable extends Migration
             $table->string('ref')->nullable();
             $table->string('project_title');
             $table->string('statue');
-            $table->date('date_de_depot');
-            $table->string('new column');
+            $table->date('date_de_depot')->nullable();
             $table->foreignId('researcher_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
