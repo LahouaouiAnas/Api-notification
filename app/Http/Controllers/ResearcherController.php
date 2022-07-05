@@ -11,21 +11,14 @@ class ResearcherController extends Controller
 {
     public function index()
     {
-        $researchers = Researcher::all();
-        return response()->json($researchers);
+        $researchers = Researcher::with('departement')->get();
+       return  response()->json($researchers);
     }
-
-    // public function showResearcher ($researchers)
-    // {
-    //     foreach ($researchers as $researcher){
-    //         $data['nom'] = $researcher->departement->id;
-    //     }
-    //     return $data;
-    // } 
 
     public function show(Researcher $researcher)
     {
-        return response()->json($researcher);
+        $researcher2 = $researcher->load('departement');
+        return response()->json($researcher2);
     }
 
     public function store(Request $request)
@@ -66,7 +59,6 @@ class ResearcherController extends Controller
             'phone_number' => $request->phone_number,
             'departement_id' => $request->departement_id
         ]);
-
         return response()->json($researcher);
     }
 

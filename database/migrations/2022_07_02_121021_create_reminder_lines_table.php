@@ -17,7 +17,7 @@ class CreateReminderLinesTable extends Migration
             $table->id();
             $table->date('notif_date')->nullable();
             $table->foreignId('dossier_id')->constrained()->nullable()->onDelete('cascade');
-            $table->foreignId('reminder_type_id')->constrained()->nullable();
+            $table->foreignId('reminder_type_id')->constrained()->nullable()->onDelete('cascade');
             $table->timestamps();
         });
     }

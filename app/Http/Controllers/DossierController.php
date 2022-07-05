@@ -15,15 +15,24 @@ class DossierController extends Controller
 {
     public function index()
     {
-            $dossiers = Dossier::all();
-       
+        $dossiers = Dossier::with('researcher')->get();
         return response()->json($dossiers);
     }
 
-
     public function show(Dossier $dossier)
-    {
-        return response()->json($dossier);
+    {   
+        if(isset($dossier->id))
+        {
+            $dossier2 = $dossier->load('researcher');
+            return response()->json($dossier2);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'Invalid password address'
+            ]);
+        }
+        
     }
 
     public function store(Request $request)
@@ -64,7 +73,6 @@ class DossierController extends Controller
         // $this->validate($request,[
             
         // ]);
-
         $dossier->update([
             'ref' => $request->ref,
             'project_title' => $request->project_title,
@@ -72,16 +80,13 @@ class DossierController extends Controller
             'date_de_depot' => $request->date_de_depot,
             'researcher_id' => $request->researcher_id
         ]);
-
-        $reminder_lines = ReminderLine::where('dossier_id', $dossier->id );
-        $date = Carbon::createFromFormat('Y-m-d', $dossier->date_de_depot);
-        foreach($reminder_lines as $reminder_line){
-            $date_de_notif = $date->addDays($reminder_line->remindertype->number_of_days);
+        
+        $reminder_lines = ReminderLine::find($dossier->id);
+            $date = Carbon::createFromFormat('Y-m-d', $request->date_de_depot);
+            $date_de_notif = $date->addDays($reminder_lines->remindertype->number_of_days);
+            $reminder_lines->notif_date = $date_de_notif;
+            $reminder_lines->save();
             
-            $reminder_line->update([
-                'notif_date' => $date_de_notif
-            ]);
-        }
 
         return response()->json($dossier);
     }

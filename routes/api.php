@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DossierController;
 use App\Http\Controllers\ResearcherController;
 use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\Reminder_linesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,10 +29,10 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('dossiers', 'DossierController');
     Route::apiResource('departements', 'DepartementController');
     Route::apiResource('researchers', 'ResearcherController');
+    Route::apiResource('reminder_lines', 'Reminder_linesController');
     Route::get('/logout', 'UserController@logout');
 });
 
 Route::get('/mail', 'MailController@mailing');
-
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
