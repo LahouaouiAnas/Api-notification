@@ -73,22 +73,22 @@ class DossierController extends Controller
         // $this->validate($request,[
             
         // ]);
-        $dossier->update([
-            'ref' => $request->ref,
-            'project_title' => $request->project_title,
-            'statue' => $request->statue,
-            'date_de_depot' => $request->date_de_depot,
-            'researcher_id' => $request->researcher_id
-        ]);
+        // $dossier->update([
+        //     'ref' => $request->ref,
+        //     'project_title' => $request->project_title,
+        //     'statue' => $request->statue,
+        //     'date_de_depot' => $request->date_de_depot,
+        //     'researcher_id' => $request->researcher_id
+        // ]);
         
-        $reminder_lines = ReminderLine::find($dossier->id);
-            $date = Carbon::createFromFormat('Y-m-d', $request->date_de_depot);
-            $date_de_notif = $date->addDays($reminder_lines->remindertype->number_of_days);
-            $reminder_lines->notif_date = $date_de_notif;
-            $reminder_lines->save();
+        // $reminder_lines = ReminderLine::find($dossier->id);
+        //     $date = Carbon::createFromFormat('Y-m-d', $request->date_de_depot);
+        //     $date_de_notif = $date->addDays($reminder_lines->remindertype->number_of_days);
+        //     $reminder_lines->notif_date = $date_de_notif;
+        //     $reminder_lines->save();
             
 
-        return response()->json($dossier);
+        // return response()->json($dossier);
     }
 
     public function destroy(Dossier $dossier)

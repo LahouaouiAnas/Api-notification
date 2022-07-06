@@ -45,11 +45,11 @@ class SendNotif extends Command
         $reminderLines = ReminderLine::all();
         $day = Carbon::now()->format('Y-m-d');
         foreach ($reminderLines as $reminderLine){
-            if($reminderLine->notif_date == $day)
-            {
-                Mail::to('lahouaouianas2@gmail.com')->send(new mailTest);
-             return view('test');
-            }
+            // if($reminderLine->notif_date == $day)
+            // {
+                Mail::to('lahouaouianas2@gmail.com')->send(new mailTest($reminderLine));
+                return view('test');
+            // }
         }
     }
 }

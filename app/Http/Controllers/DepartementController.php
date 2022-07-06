@@ -13,13 +13,13 @@ class DepartementController extends Controller
         return response()->json($departements);
     }
 
-    // public function departementsToArray($departements)
-    // {
-    //     foreach ($departements as $departement) {
-    //         $data['nom'] = $departement->nom;
-    //     }
-    //     return $data;
-    // }
+    public function departementsToArray($departements)
+    {
+        foreach ($departements as $departement) {
+            $data['nom'] = $departement->nom;
+        }
+        return $data;
+    }
 
     public function show(Departement $departement)
     {
