@@ -17,9 +17,12 @@ class CreateDossiersTable extends Migration
             $table->id();
             $table->string('ref')->nullable();
             $table->string('project_title');
-            $table->string('statue');
+            $table->boolean('arret');
+            $table->string('statue')->default('statue1');
+            $table->text('motif_arret')->nullable();
             $table->date('date_de_depot')->nullable();
-            $table->foreignId('researcher_id')->constrained()->onDelete('cascade');
+            $table->bigInteger('researcher_id')->unsigned();
+            $table->foreign('researcher_id')->references('id')->on('researchers')->onDeleteCascade();
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Event;
+use App\Models\Statut;
 use App\Models\Researcher;
 use App\Models\ReminderLine;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +22,11 @@ class Dossier extends Model
     public function researcher()
     {
         return $this->belongsTo(Researcher::class);
+    }
+
+    public function statuts()
+    {
+        return $this->belongsToMany(Statut::class);
     }
 
     protected $fillable = [

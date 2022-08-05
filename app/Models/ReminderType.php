@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class ReminderType extends Model
 {
     use HasFactory;
-
-    public function reminderLines()
+    
+    public function reminderlines()
     {
         return $this->hasMany(ReminderLine::class);
     }

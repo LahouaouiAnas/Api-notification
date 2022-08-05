@@ -15,9 +15,12 @@ class CreateReminderLinesTable extends Migration
     {
         Schema::create('reminder_lines', function (Blueprint $table) {
             $table->id();
-            $table->date('notif_date')->nullable();
-            $table->foreignId('dossier_id')->constrained()->nullable()->onDelete('cascade');
-            $table->foreignId('reminder_type_id')->constrained()->nullable()->onDelete('cascade');
+            $table->date('premiere_notif_date');
+            $table->date('deuxieme_notif_date');
+            $table->bigInteger('dossier_id')->unsigned();
+            $table->bigInteger('reminder_type_id')->unsigned();
+            $table->foreign('dossier_id')->references('id')->on('dossiers')->onDeleteCascade();
+            $table->foreign('reminder_type_id')->references('id')->on('reminder_types')->onDeleteCascade();
             $table->timestamps();
         });
     }

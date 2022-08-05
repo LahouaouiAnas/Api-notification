@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEventsTable extends Migration
+class CreateFilesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateEventsTable extends Migration
      */
     public function up()
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('files', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->date('date_event');
-            $table->date('date_notification');
-            $table->foreignId('dossier_id')->constrained();
+            $table->string('path')->nullable();
+            $table->bigInteger('reminder_line_id')->unsigned();
+            $table->foreign('reminder_line_id')->references('id')->on('reminder_lines');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateEventsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('files');
     }
 }

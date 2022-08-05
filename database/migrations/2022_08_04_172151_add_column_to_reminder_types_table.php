@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReminderTypesTable extends Migration
+class AddColumnToReminderTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateReminderTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('reminder_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->integer('number_of_days')->nullable();
-            $table->timestamps();
+        Schema::table('reminder_types', function (Blueprint $table) {
+            $table->integer('order');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateReminderTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reminder_types');
+        Schema::table('reminder_types', function (Blueprint $table) {
+            //
+        });
     }
 }

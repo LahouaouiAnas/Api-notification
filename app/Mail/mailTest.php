@@ -19,11 +19,15 @@ class mailTest extends Mailable
      */
 
     public $reminder_line;
+    public $i;
+    public $date_event;
 
 
-    public function __construct(ReminderLine $reminder_line)
+    public function __construct( $reminder_line, $reminder_type, $date_event)
     {
         $this->reminder_line = $reminder_line;
+        $this->reminder_type = $reminder_type;
+        $this->date_event = $date_event;
     }
 
     /**
@@ -34,6 +38,8 @@ class mailTest extends Mailable
     public function build()
     {
         return $this->from('test@mail.com')
-        ->view('email')->with('notif_date');
+        ->view('email')->with('reminder_types');
     }
 }
+
+

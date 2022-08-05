@@ -68,7 +68,7 @@ class ResearcherController extends Controller
         foreach ($dossiers as $dossier)
         {
             $dossierController = new DossierController;
-            $dossierController->destroy();
+            $dossierController->destroy($dossier);
         }
         $researcher->delete();
         return response()->json([

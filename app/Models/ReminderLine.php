@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\File;
+use App\Models\Dossier;
 use App\Models\ReminderLine;
 use App\Models\ReminderType;
 use Illuminate\Database\Eloquent\Model;
@@ -13,18 +15,28 @@ class ReminderLine extends Model
 
     public function dossier()
     {
-        return $this->belongsTo(dossier::class);
+        return $this->belongsTo(Dossier::class);
     }
 
     public function remindertype()
     {
-        return $this->belongsTo(ReminderType::class);
+        return $this->belongsTo(ReminderType::class, 'reminder_type_id');
+    }
+
+    public function files()
+    {
+        return $this->hasMany(File::class);
     }
 
     protected $fillable = [
         'dossier_id',
+        'premiere_notif_date',
+        'deuxieme_notif_date',
         'notif_date',
-        'reminder_type_id'
+        'reminder_type_id',
+        'reminder_type_id',
+        'actif',
+        'done'
     ];
     
 }

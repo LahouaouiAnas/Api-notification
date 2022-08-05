@@ -19,7 +19,8 @@ class CreateResearchersTable extends Migration
             $table->string('prenom');
             $table->string('email');
             $table->integer('phone_number');
-            $table->foreignId('departement_id')->constrained();
+            $table->bigInteger('departement_id')->unsigned();
+            $table->foreign('departement_id')->references('id')->on('departements');
             $table->timestamps();
         });
     }

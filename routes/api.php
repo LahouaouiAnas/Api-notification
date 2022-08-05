@@ -27,12 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('dossiers', 'DossierController');
+    Route::post('/switchPhases', 'DossierController@switchReminder_line_type')->name('switch');        
     Route::apiResource('departements', 'DepartementController');
+    Route::apiResource('files', 'FileController');
     Route::apiResource('researchers', 'ResearcherController');
     Route::apiResource('reminder_lines', 'Reminder_linesController');
     Route::get('/logout', 'UserController@logout');
 });
 
-Route::get('/mail', 'MailController@mailing');
+// Route::get('/mail', 'MailController@mailing');
 Route::post('/register', 'UserController@register');
 Route::post('/login', 'UserController@login');
