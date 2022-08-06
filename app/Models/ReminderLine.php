@@ -15,7 +15,7 @@ class ReminderLine extends Model
 
     public function dossier()
     {
-        return $this->belongsTo(Dossier::class);
+        return $this->belongsTo(Dossier::class, 'dossier_id');
     }
 
     public function remindertype()

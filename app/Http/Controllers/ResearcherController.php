@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dossier;
 use App\Models\Researcher;
+use App\Models\ReminderLine;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DossierController;
 
@@ -64,11 +65,14 @@ class ResearcherController extends Controller
 
     public function destroy(Researcher $researcher)
     {
-        $dossiers = Dossier::where('researcher_id', $researcher->id);
+        $dossiers = Dossier::where('researcher_id', $researcher->id)->get();
         foreach ($dossiers as $dossier)
         {
-            $dossierController = new DossierController;
-            $dossierController->destroy($dossier);
+            $reminder_lines = ReminderLine::where('dossier_id', $dossier->id)->get();
+            foreach($reminder_lines as $reminder_line){
+                ReminderLine::find($reminder_line->id)->delete();
+            }
+            Dossier::find($dossier->id)->delete();
         }
         $researcher->delete();
         return response()->json([

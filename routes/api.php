@@ -27,7 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::apiResource('dossiers', 'DossierController');
-    Route::post('/switchPhases', 'DossierController@switchReminder_line_type')->name('switch');        
+    Route::apiResource('statues', 'StatueController');
+    Route::post('/switchPhases', 'DossierController@switchReminder_line_type')->name('switchPhases');        
+    Route::post('/arret/{id}', 'DossierController@arret')->name('arretDossier');        
     Route::apiResource('departements', 'DepartementController');
     Route::apiResource('files', 'FileController');
     Route::apiResource('researchers', 'ResearcherController');

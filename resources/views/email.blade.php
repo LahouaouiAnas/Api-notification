@@ -18,7 +18,7 @@
 <div class="email">
     <p>
         le dossier avec reference <span class="strong">{{$reminder_line->dossier->ref}}</span>  
-         arrive a la phase de <span class="strong">{{$reminder_line->remindertype->description}}</span>  le <br>
+         arrive a la phase de <span class="strong">{{$reminder_line->remindertype->description}}</span>  le
           <span class="strong">{{substr($date_event,0, 10) }}</span>
     </p>
 </div>

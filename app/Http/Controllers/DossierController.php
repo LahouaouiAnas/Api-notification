@@ -16,7 +16,7 @@ class DossierController extends Controller
 {
     public function index()
     {
-        $dossiers = Dossier::with('researcher')->get();
+        $dossiers = Dossier::with('researcher', 'reminderLines', 'statue')->get();
         return response()->json($dossiers);
     }
 
@@ -24,13 +24,13 @@ class DossierController extends Controller
     {   
         if(isset($dossier->id))
         {
-            $dossier2 = $dossier->load('researcher');
+            $dossier2 = $dossier->load('researcher', 'reminderLines', 'statue');
             return response()->json($dossier2);
         }
         else
         {
             return response()->json([
-                'message' => 'Invalid password address'
+                'message' => 'dossier nexistes pas'
             ]);
         }
         
@@ -42,6 +42,7 @@ class DossierController extends Controller
             'ref' => 'required|string|max:20',
             'project_title' => 'required|string|max:191',
             'researcher_id' => 'required',
+            'statue_id' => 'required',
             'date_de_depot' => 'nullable'
         ]);
 
@@ -49,6 +50,7 @@ class DossierController extends Controller
             'ref' => $request->ref,
             'project_title' => $request->project_title,
             'date_de_depot' => $request->date_de_depot,
+            'statue_id' => $request->statue_id,
             'researcher_id' => $request->researcher_id
         ]);
 
@@ -87,7 +89,7 @@ class DossierController extends Controller
         $dossier->update([
             'ref' => $request->ref,
             'project_title' => $request->project_title,
-            'statue' => $request->statue,
+            'statue_id' => $request->statue_id,
             'researcher_id' => $request->researcher_id
         ]);
         if(!empty($dossier->date_de_depot)){
@@ -146,8 +148,10 @@ class DossierController extends Controller
 
     public function destroy(Dossier $dossier)
     {
-        $reminderLine = ReminderLine::where('dossier_id', $dossier->id);
-        $reminderLine->delete();
+        $reminder_lines = ReminderLine::where('dossier_id', $dossier->id)->get();
+        foreach($reminder_lines as $reminder_line){
+            ReminderLine::find($reminder_line->id)->delete();
+        }
         $dossier->delete();
         return response()->json([
             'message' => 'dossier deleted'
@@ -168,5 +172,21 @@ class DossierController extends Controller
         return response()->json([
             'message' => 'phase changed'
         ]);
-}
+    }
+
+    public function arret($id){
+        $dossier = Dossier::find($id);
+
+        if($dossier->arret == 0){
+            $dossier->arret = 1;
+        }
+        else{
+            $dossier->arret = 0;
+        }
+        $dossier->save();
+
+        return response()->json([
+            'message' => 'dossier arreté'
+        ]);
+    } 
 }

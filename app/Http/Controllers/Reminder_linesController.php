@@ -16,7 +16,8 @@ class Reminder_linesController extends Controller
 
     public function show(ReminderLine $reminder_line)
     {
-        $reminder_line2 = $reminder_line->load('dossier', 'files', 'remindertype');
+        $reminder_line2 = $reminder_line->with('dossier', 'files', 'remindertype');
         return response()->json($reminder_line2);
     }
 }
+

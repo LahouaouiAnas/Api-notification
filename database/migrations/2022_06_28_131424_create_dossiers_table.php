@@ -18,7 +18,8 @@ class CreateDossiersTable extends Migration
             $table->string('ref')->nullable();
             $table->string('project_title');
             $table->boolean('arret');
-            $table->string('statue')->default('statue1');
+            $table->bigInteger('statue_id')->unsigned();
+            $table->foreign('statue_id')->references('id')->on('statues');
             $table->text('motif_arret')->nullable();
             $table->date('date_de_depot')->nullable();
             $table->bigInteger('researcher_id')->unsigned();

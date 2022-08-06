@@ -6,12 +6,17 @@ use App\Models\Dossier;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Statut extends Model
+class Statue extends Model
 {
     use HasFactory;
 
     public function dossiers()
     {
-        return $this->belongsToMany(Dossier::class);
+        return $this->hasMany(Dossier::class);
     }
+
+    protected $fillable = [
+        'name',
+        'description'
+    ];
 }

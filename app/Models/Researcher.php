@@ -21,6 +21,8 @@ class Researcher extends Model
         return $this->hasMany(Dossier::class);
     }
 
+    
+
     protected $fillable = [
         'nom',
         'prenom',
